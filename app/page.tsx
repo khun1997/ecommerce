@@ -1,38 +1,28 @@
-import { Button } from "@/components/ui/button";
+"use client";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/auth-store";
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-zinc-50 dark:bg-black">
-      <Button variant="outline">Hello World</Button>
+export default function HomePage() {
+  const router = useRouter();
+  const user = useAuthStore((s) => s.user);
+  const loading = useAuthStore((s) => s.loading);
+  const init = useAuthStore((s) => s.init);
 
-      <Button className="cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg">
-        Hover Me
-      </Button>
+  useEffect(() => {
+    init();
+  }, []);
 
-      <Card className="w-80 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-        <CardHeader>
-          <CardTitle>Card Title</CardTitle>
+  useEffect(() => {
+    if (loading) return;
 
-          <CardDescription>This is a description of the card.</CardDescription>
-        </CardHeader>
+    if (user) {
+      router.push("/dashboard");
+    } else {
+      router.push("/signin");
+    }
+  }, [user, loading]);
 
-        <CardContent>
-          <p>This is the content of the card.</p>
-        </CardContent>
-
-        <CardFooter>
-          <Button variant="secondary">Action</Button>
-        </CardFooter>
-      </Card>
-    </div>
-  );
+  return <div>Loading...</div>;
 }
