@@ -24,17 +24,48 @@ export async function middleware(req: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isAuthPage =
-    req.nextUrl.pathname.startsWith("/signin") ||
-    req.nextUrl.pathname.startsWith("/signup");
+  const path = req.nextUrl.pathname;
 
-  const isProtectedPage = req.nextUrl.pathname.startsWith("/dashboard");
+  const isAuthPage = path.startsWith("/signin") || path.startsWith("/signup");
 
-  if (!user && isProtectedPage) {
+  const isDashboardRoute = path.startsWith("/dashboard");
+  const isAppRoute = path.startsWith("/app");
+
+  // 🔥 1. NOT logged in → block protected routes
+  if (!user && (isDashboardRoute || isAppRoute)) {
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 
-  if (user && isAuthPage) {
+  // 🔥 2. If not logged in and not protected → allow
+  if (!user) return res;
+
+  // 🔥 3. ONLY fetch profile when needed (admin or routing decision)
+  let role = "user";
+
+  if (isDashboardRoute || isAppRoute || isAuthPage) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+
+    role = profile?.role || "user";
+  }
+
+  // 🔥 4. redirect logged-in users away from auth pages
+  if (isAuthPage) {
+    return NextResponse.redirect(
+      new URL(role === "admin" ? "/dashboard" : "/app", req.url),
+    );
+  }
+
+  // 🔥 5. admin protection
+  if (isDashboardRoute && role !== "admin") {
+    return NextResponse.redirect(new URL("/app", req.url));
+  }
+
+  // 🔥 6. optional: prevent admin going to app
+  if (isAppRoute && role === "admin") {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 

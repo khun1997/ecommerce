@@ -8,9 +8,10 @@ type AuthFormProps = {
   title: string;
   onSubmit: (data: { email: string; password: string }) => void;
   loading?: boolean;
+  btnText: string;
 };
 
-export function AuthForm({ title, onSubmit, loading }: AuthFormProps) {
+export function AuthForm({ title, onSubmit, loading, btnText }: AuthFormProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -35,7 +36,7 @@ export function AuthForm({ title, onSubmit, loading }: AuthFormProps) {
           <Input name="password" type="password" placeholder="Password" />
 
           <Button className="w-full" disabled={loading}>
-            {loading ? "Loading..." : "Continue"}
+            {loading ? "Loading..." : btnText}
           </Button>
         </form>
       </CardContent>

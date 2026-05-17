@@ -8,26 +8,36 @@ import { useAuthStore } from "@/store/auth-store";
 export default function SignInPage() {
   const user = useAuthStore((s) => s.user);
   const signIn = useAuthStore((s) => s.signIn);
+
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     if (user) {
-      router.push("/dashboard");
+      router.replace("/app");
     }
-  }, [user]);
+  }, [user, router]);
 
   const handleSubmit = async (data: { email: string; password: string }) => {
-    setLoading(true);
     try {
+      setLoading(true);
       await signIn(data.email, data.password);
+      router.replace("/app");
+    } catch (err) {
+      console.log("Sign in error:", err);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <AuthForm title="Sign In" onSubmit={handleSubmit} loading={loading} />
+      <AuthForm
+        title="Sign In"
+        btnText={"LogIn"}
+        onSubmit={handleSubmit}
+        loading={loading}
+      />
     </div>
   );
 }

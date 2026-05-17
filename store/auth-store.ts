@@ -56,6 +56,7 @@ export const useAuthStore = create<AuthStore>()(
       signOut: async () => {
         await supabase.auth.signOut();
         set({ user: null });
+        window.location.href = "/signin";
       },
     }),
     {
