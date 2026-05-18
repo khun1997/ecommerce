@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -23,11 +18,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="flex min-h-full flex-col">{children}</body>
+    <html lang="en" className={`${inter.variable} dark`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+        <link
+          href="https://fonts.cdnfonts.com/css/54076c6dab00deefbda79e9f4f680af6"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="flex min-h-full flex-col antialiased">{children}</body>
     </html>
   );
 }

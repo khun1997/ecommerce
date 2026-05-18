@@ -32,25 +32,29 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#0a0a0a]">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gradient-to-br from-violet-600/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gradient-to-tl from-emerald-600/10 to-transparent rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-violet-600/5 to-emerald-600/5 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen relative overflow-hidden bg-canvas">
+      <nav className="border-b border-hairline bg-canvas">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex h-16 items-center justify-between">
+            <Link href="/app" className="text-xl font-bold tracking-tight text-white">
+              BMW M
+            </Link>
+          </div>
+        </div>
+      </nav>
 
-      <div className="relative min-h-screen flex items-center justify-center px-4">
+      <div className="absolute right-0 top-0 h-3 w-3 bg-m-blue-light" />
+
+      <div className="relative flex min-h-[calc(100vh-64px)] items-center justify-center px-6">
         <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">
-              Welcome Back
-            </h1>
-            <p className="text-zinc-400 text-lg">
+          <div className="mb-8 text-center">
+            <h1 className="mb-2 text-4xl font-bold text-white">WELCOME BACK</h1>
+            <p className="text-lg text-body">
               Sign in to continue your journey
             </p>
           </div>
 
-          <div className="backdrop-blur-xl bg-zinc-900/50 border border-zinc-800/50 rounded-2xl p-8 shadow-2xl shadow-black/50">
+          <div className="border border-hairline bg-surface-card p-8">
             <AuthForm
               title=""
               btnText="Sign In"
@@ -58,12 +62,9 @@ export default function SignInPage() {
               loading={loading}
             />
 
-            <p className="text-center text-zinc-400 mt-6 text-sm">
+            <p className="mt-6 text-center text-sm font-medium text-muted">
               Don&apos;t have an account?{" "}
-              <Link
-                href="/signup"
-                className="text-emerald-400 hover:text-emerald-300 transition-colors font-medium"
-              >
+              <Link href="/signup" className="text-m-blue-light hover:underline">
                 Create one
               </Link>
             </p>
